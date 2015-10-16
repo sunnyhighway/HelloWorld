@@ -10,7 +10,11 @@ namespace HelloWorld
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(string.Format("hello {0}."));
+            bool option = true;
+
+            if (option == true) {
+                Console.WriteLine(string.Format("hello {0}."));
+            }
         }
     }
 }
