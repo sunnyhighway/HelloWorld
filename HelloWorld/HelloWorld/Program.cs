@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Globalization;
 
 namespace HelloWorld
 {
@@ -12,8 +9,10 @@ namespace HelloWorld
         {
             bool option = true;
 
-            if (option == true) {
-                Console.WriteLine(string.Format("hello {0}."));
+            if (option == true)
+            {
+                CultureInfo userCulture = new CultureInfo("Fr-fr", true);
+                Console.WriteLine(string.Format(userCulture, "hello {0}.", args[0]));
             }
         }
     }
