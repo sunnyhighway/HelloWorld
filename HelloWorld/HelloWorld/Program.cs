@@ -40,7 +40,7 @@ namespace HelloWorld
                 }
                 else
                 {
-                    culturename = "EN-en";
+                    culturename = "En-en";
                 }
 
                 return culturename;
