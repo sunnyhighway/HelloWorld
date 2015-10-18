@@ -97,21 +97,19 @@ namespace HelloWorld
 
         public EnumValueNotHandledException(string message) : base(message) { }
 
+        public EnumValueNotHandledException(string message, Exception innerException) 
+         : base (message, innerException) { }
         public EnumValueNotHandledException(object enumValue)
-            : base(string.Format(CultureInfo.InvariantCulture, "Unhandled value for enum '{0}' value: '{1}'", enumValue?.GetType().Name, enumValue))
+            : this(string.Format(CultureInfo.InvariantCulture, "Unhandled value for enum '{0}' value: '{1}'", enumValue?.GetType().Name, enumValue))
         { }
 
-        public EnumValueNotHandledException(string message, Exception innerException) :
-         base(message, innerException)
-        {
-            throw new NotImplementedException("EnumValueNotHandledException(string message, Exception innerException)");
-        }
+        public EnumValueNotHandledException(object enumValue, Exception innerException)
+         : this(string.Format(CultureInfo.InvariantCulture, "Unhandled value for enum '{0}' value: '{1}'", enumValue?.GetType().Name, enumValue), innerException)
+        { }
 
-        protected EnumValueNotHandledException(SerializationInfo info, StreamingContext context) 
+        protected EnumValueNotHandledException(SerializationInfo info, StreamingContext context)
             : base(info, context)
-        {
-            throw new NotImplementedException("EnumValueNotHandledException(SerializationInfo info, StreamingContext context)");
-        }
+        { }
     }
 
 }
