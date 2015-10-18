@@ -15,13 +15,14 @@ namespace HelloWorld
             {
                 RegasCultureInfo userCulture = new RegasCultureInfo(args[1]);
                 Console.WriteLine(string.Format(userCulture, "hello {0}.", args[0]));
+
+                Console.WriteLine("press any key to continue.");
+                Console.ReadKey();
             }
         }
 
         class RegasCultureInfo :CultureInfo
         {
-            
-            public RegasCultureInfo() : base("En-en") { }
 
             public RegasCultureInfo(string language) :base(GetUserCulture(language),true) {}
 
