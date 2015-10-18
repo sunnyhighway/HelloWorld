@@ -1,59 +1,81 @@
 ﻿using System;
 using System.Globalization;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace HelloWorld
 {
     class Program
     {
+        private const string SayHello = "Hello {0}.";
+        private const string PressAnyKeyToContinue = "Press any key to continue.";
+
+        /// <summary>
+        /// Main entrypoint of the HelloWorld application
+        /// </summary>
+        /// <param name="args">
+        /// arg[0] name
+        /// arg[1] language
+        /// </param>
         static void Main(string[] args)
         {
             RegasCultureInfo userCulture = new RegasCultureInfo(args[1]);
-            Console.WriteLine(string.Format(userCulture, "hello {0}.", args[0]));
+            Console.WriteLine(string.Format(userCulture, SayHello, args[0]));
 
-            Console.WriteLine("Press any key to continue.");
+            Console.WriteLine(PressAnyKeyToContinue);
             Console.ReadKey();
         }
 
-        class RegasCultureInfo :CultureInfo
+        /// <summary>
+        /// Regas implementation of the CultureInfo Class
+        /// </summary>
+        class RegasCultureInfo : CultureInfo
         {
+            private static Dictionary<string, string> UserCulture
+                = new Dictionary<string, string> {
+                    { "frans", "Fr-fr" },
+                    { "duits", "De-de" },
+                    { "nederlands", "Nl-nl" },
+                    { "engels", "En-en" }
+            };
 
-            enum WhenLanguageIsUnknown
+            private enum HandleUnknownlanguageMethod
             {
+                Unkonwn,
                 ThrowException,
                 SetDefaultLanguage
             }
 
-            public RegasCultureInfo(string language) :base(GetUserCulture(language),true) {}
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="language"></param>
+            public RegasCultureInfo(string language) : base(GetUserCulture(language), true) { }
 
             private static string GetUserCulture(string language)
             {
-                return GetUserCulture(language, WhenLanguageIsUnknown.ThrowException);
+                return GetUserCulture(language, HandleUnknownlanguageMethod.ThrowException);
             }
 
-            private static string GetUserCulture(string language, WhenLanguageIsUnknown whenLanguageIsUnknown)
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)")]
+            private static string GetUserCulture(string language, HandleUnknownlanguageMethod handleUnknownlanguageMethod)
             {
-                Dictionary<string, string> UserCulture = new Dictionary<string, string>(4);
-                UserCulture.Add("frans", "Fr-fr");
-                UserCulture.Add("duits", "De-de");
-                UserCulture.Add("nederlands", "Nl-nl");
-                UserCulture.Add("engels", "En-en"); 
-
                 string culturename;
+
                 if (!UserCulture.TryGetValue(language, out culturename))
                 {
-                    switch (whenLanguageIsUnknown)
+                    switch (handleUnknownlanguageMethod)
                     {
-                        case WhenLanguageIsUnknown.ThrowException:
-                            throw new CultureNotFoundException(string.Format(CultureInfo.InvariantCulture ,"User speaks {0}, we cant cope with that.", language));
+                        case HandleUnknownlanguageMethod.ThrowException:
+                            //throw new CultureNotFoundException(string.Format(InvariantCulture, "User speaks {0}, we cant cope with that.", language));
+                            throw new CultureNotFoundException($"User speaks {language}, we cant cope with that.");
 
-                        case WhenLanguageIsUnknown.SetDefaultLanguage:
+                        case HandleUnknownlanguageMethod.SetDefaultLanguage:
                             culturename = "En-en";
                             break;
 
                         default:
-                            throw new NotImplementedException(string.Format(CultureInfo.InvariantCulture, "Undefined value for enum 'WhenLanguageIsUnknown': {0}.", whenLanguageIsUnknown.ToString()));
-
+                            throw new EnumValueNotHandledException(handleUnknownlanguageMethod);
                     }
                 }
 
@@ -61,4 +83,35 @@ namespace HelloWorld
             }
         }
     }
+
+    /// <summary>
+    /// The exception that can be thrown when a requested enum value is not implemented.
+    /// </summary>
+    [Serializable()]
+    public class EnumValueNotHandledException : NotImplementedException
+    {
+        /// <summary>
+        /// Initializes a new instance of the System.NotImplementedException class with default properties
+        /// </summary>
+        public EnumValueNotHandledException() : base() { }
+
+        public EnumValueNotHandledException(string message) : base(message) { }
+
+        public EnumValueNotHandledException(object enumValue)
+            : base(string.Format(CultureInfo.InvariantCulture, "Unhandled value for enum '{0}' value: '{1}'", enumValue?.GetType().Name, enumValue))
+        { }
+
+        public EnumValueNotHandledException(string message, Exception innerException) :
+         base(message, innerException)
+        {
+            throw new NotImplementedException("EnumValueNotHandledException(string message, Exception innerException)");
+        }
+
+        protected EnumValueNotHandledException(SerializationInfo info, StreamingContext context) 
+            : base(info, context)
+        {
+            throw new NotImplementedException("EnumValueNotHandledException(SerializationInfo info, StreamingContext context)");
+        }
+    }
+
 }
