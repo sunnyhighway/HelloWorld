@@ -3,7 +3,10 @@
 namespace System.Globalization
 {
     /// <summary>
-    /// Regas implementation of the CultureInfo Class
+    ///     Regas implementation of the CultureInfo Class
+    ///     Provides information about a specific culture (called a locale for unmanaged
+    ///     code development). The information includes the names for the culture, the writing
+    ///     system, the calendar used, and formatting for dates and sort strings.
     /// </summary>
     class RegasCultureInfo : CultureInfo
     {
@@ -23,9 +26,12 @@ namespace System.Globalization
         }
 
         /// <summary>
-        /// 
+        ///     Initializes a new instance of the System.Globalization.RegasCultureInfo class based
+        ///     on the culture specified by name.
         /// </summary>
-        /// <param name="language"></param>
+        /// <param name="language">
+        /// 
+        /// </param>
         public RegasCultureInfo(string language) : base(GetUserCulture(language), true) { }
 
         private static string GetUserCulture(string language)
@@ -33,7 +39,7 @@ namespace System.Globalization
             return GetUserCulture(language, HandleUnknownlanguageMethod.ThrowException);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)")]
+        [Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)")]
         private static string GetUserCulture(string language, HandleUnknownlanguageMethod handleUnknownlanguageMethod)
         {
             string culturename;
