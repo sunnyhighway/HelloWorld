@@ -23,10 +23,5 @@ namespace HelloWorld
             Console.WriteLine(PressAnyKeyToContinue);
             Console.ReadKey();
         }
-
-
     }
-
-
-
 }
