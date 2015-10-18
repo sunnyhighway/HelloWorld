@@ -23,7 +23,7 @@ namespace HelloWorld
             
             public RegasCultureInfo() : base("En-en") { }
 
-            public RegasCultureInfo(string name):base(GetUserCulture(name)) {}
+            public RegasCultureInfo(string language) :base(GetUserCulture(language),true) {}
 
             private static string GetUserCulture(string language)
             {
@@ -31,16 +31,14 @@ namespace HelloWorld
                 UserCulture.Add("frans", "Fr-fr");
                 UserCulture.Add("duits", "De-de");
                 UserCulture.Add("nederlands", "Nl-nl");
-                UserCulture.Add("engels", "Fr-fr");
+                UserCulture.Add("engels", "En-en"); 
 
                 string culturename;
                 if (!UserCulture.TryGetValue(language, out culturename))
                 {
                     throw new CultureNotFoundException(string.Format("User speaks {0}, we cant cope with that.", language));
-                }
-                else
-                {
-                    culturename = "En-en";
+                    // Alternative: Use a failover language, for example: english
+                    //culturename = "En-en";
                 }
 
                 return culturename;
