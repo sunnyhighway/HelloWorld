@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace System
 {
     /// <summary>
-    ///     The exception that can be thrown when a requested enum value is not implemented.
+    ///     The exception that can be thrown when a requested enum value is not handled.
     /// </summary>
     [Serializable()]
     public class EnumValueNotHandledException : NotImplementedException
@@ -44,6 +44,24 @@ namespace System
         /// <param name="enumValue">
         ///     The enum which was not handled
         /// </param>
+        /// <example> 
+        /// This sample shows how to call the <see cref="EnumValueNotHandledException"/> method.
+        /// <code>
+        /// class TestClass 
+        ///  switch (handleUnknownlanguageMethod)
+        ///     {
+        ///         case HandleUnknownlanguageMethod.ThrowException:
+        ///             throw new CultureNotFoundException($"User speaks {language:InvarianCulture}, we can't cope with that.");
+        /// 
+        ///         case HandleUnknownlanguageMethod.SetDefaultLanguage:
+        ///             culturename = "En-en";
+        ///             break;
+        ///
+        ///         default:
+        ///             throw new EnumValueNotHandledException(handleUnknownlanguageMethod);
+        ///     }
+        /// </code>
+        /// </example>
         public EnumValueNotHandledException(object enumValue)
             : this(string.Format(CultureInfo.InvariantCulture, "Unhandled value for enum '{0}' value: '{1}'", enumValue?.GetType().Name, enumValue))
         { }

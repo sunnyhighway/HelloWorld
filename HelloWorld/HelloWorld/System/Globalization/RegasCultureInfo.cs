@@ -39,7 +39,6 @@ namespace System.Globalization
             return GetUserCulture(language, HandleUnknownlanguageMethod.ThrowException);
         }
 
-        [Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)")]
         private static string GetUserCulture(string language, HandleUnknownlanguageMethod handleUnknownlanguageMethod)
         {
             string culturename;
@@ -49,8 +48,8 @@ namespace System.Globalization
                 switch (handleUnknownlanguageMethod)
                 {
                     case HandleUnknownlanguageMethod.ThrowException:
-                        //throw new CultureNotFoundException(string.Format(InvariantCulture, "User speaks {0}, we cant cope with that.", language));
-                        throw new CultureNotFoundException($"User speaks {language}, we cant cope with that.");
+                        throw new CultureNotFoundException(string.Format(InvariantCulture, "User speaks {0}, we cant cope with that.", language));
+                        //throw new CultureNotFoundException($"User speaks {language:InvarianCulture}, we can't cope with that.");
 
                     case HandleUnknownlanguageMethod.SetDefaultLanguage:
                         culturename = "En-en";
