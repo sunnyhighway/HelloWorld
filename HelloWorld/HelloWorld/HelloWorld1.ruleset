@@ -1,4 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<RuleSet Name="Rules for HelloWorld" Description="Code analysis rules for HelloWorld.csproj." ToolsVersion="14.0">
-  <IncludeAll Action="Warning" />
-</RuleSet>
